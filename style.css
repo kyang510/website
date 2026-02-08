@@ -9,7 +9,7 @@ body {
   margin: 0;
 }
 
-.jp-font * {
+.jp-font * { /* pixle font */
   font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif !important;
 }
 
@@ -63,9 +63,7 @@ p {
 .lang-bar {
   margin-bottom: 14px;
   display: flex;
-  justify-content: center;
-  gap: 8px;
-  
+  justify-content: center;  
 }
 
 .lang-btn {
@@ -74,8 +72,8 @@ p {
   color: #e5e7eb;
   padding: 8px 14px;
   border-radius: 999px;
-  cursor: pointer;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .lang-btn.active {
