@@ -1,3 +1,7 @@
+::before, ::after{
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   background: #181818;
@@ -25,6 +29,157 @@ body {
   justify-content: center;
   margin-bottom: 16px;
 }
+
+.vid-container {
+  background: black;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.vid-container.theater,
+.vid-container.fullscreen {
+  width: 100%;
+  max-width: initial;
+}
+
+.vid-container.theater{
+  max-height: 70vh;
+}
+
+.vid-container.fullscreen {
+  max-height: 100vh;
+}
+
+video {
+  width: 100%;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+}
+
+.vid-controls-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.vid-container:hover .vid-controls-container,
+.vid-container:focus-within .vid-controls-container,
+.vid-container.paused .vid-controls-container {
+  opacity: 1;
+}
+
+.vid-controls-container::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  width: 100%;
+  aspect-ratio: 6/1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.vid-controls-container .controls {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 1rem;
+}
+
+.vid-container .controls button {
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  height: 30px;
+  width: 30px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.duration-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-grow: 1;
+}
+
+.vid-container .controls button:hover {
+  opacity: 1;
+}
+
+.vid-container.paused .pause-icon {
+  display: none;
+}
+
+.vid-container:not(.paused) .play-icon {
+  display: none;
+}
+
+.vid-container.theater .tall {
+  display: none;
+}
+
+.vid-container:not(.theater) .wide {
+  display: none;
+}
+
+.vid-container.fullscreen .open {
+  display: none;
+}
+
+.vid-container:not(.fullscreen) .close {
+  display: none;
+}
+
+.volume-high, .volume-low, .volume-muted {
+  display: none;
+}
+
+.vid-container[data-volume-level="high"] .volume-high {
+  display: block;
+}
+
+.vid-container[data-volume-level="low"] .volume-low {
+  display: block;
+}
+
+.vid-container[data-volume-level="muted"] .volume-muted {
+  display: block;
+}
+
+.volume-container {
+  display: flex;
+  align-items: center;
+}
+
+.volume-slider {
+  width: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.volume-container:hover .volume-slider ,
+.volume-container:focus-within .volume-slider {
+  transform: scaleX(1);
+  width: 100px;
+}
+
+.video-controls-container .controls button.wide-btn {
+  width: 50px;
+}
+
 
 .container {
   margin-left: auto;
