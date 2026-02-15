@@ -263,7 +263,6 @@ function scrubTo(e) {
   if (isScrubbing) video.currentTime = time;
 }
 
-
 function showSeekBox(time) {
   seekTimeBox.textContent = formatTime(time);
   seekTimeBox.classList.add("show");

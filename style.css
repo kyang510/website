@@ -146,6 +146,10 @@ video {
 .volume-high, .volume-low, .volume-muted {
   display: none;
 }
+/* volume when page is refreshed// volume max on default */
+.vid-container:not([data-volume-level]) .volume-high {
+  display: block;
+}
 
 .vid-container[data-volume-level="high"] .volume-high {
   display: block;
