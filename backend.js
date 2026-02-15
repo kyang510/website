@@ -164,6 +164,11 @@ video.addEventListener("pause", () => {
 video.addEventListener("timeupdate", () => {
   const currentTime = video.currentTime;
   const duration = video.duration;
+// update progress bar and time display
+    if (duration) {
+    const progress = currentTime / duration;
+    timeline.style.setProperty("--progress-position", progress);
+  }
   const hours = Math.floor(currentTime / 3600);
   const minutes = Math.floor(currentTime / 60);
   const seconds = Math.floor(currentTime % 60);
@@ -176,3 +181,102 @@ video.addEventListener("timeupdate", () => {
   }
 });
 
+// timeline
+const timeline = document.querySelector(".timeline");
+const seekTimeBox = document.getElementById("seekTimeBox");
+
+let isScrubbing = false;
+
+const tooltip = document.createElement("div");
+tooltip.className = "time-tooltip";
+tooltip.textContent = "0:00";
+
+const thumb = document.createElement("div");
+thumb.className = "thumb-indicator";
+
+timeline.appendChild(tooltip);
+timeline.appendChild(thumb);
+
+function formatTime(time) {
+  if (!Number.isFinite(time)) return "0:00";
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
+  const seconds = Math.floor(time % 60);
+  const mm = hours > 0 ? String(minutes).padStart(2, "0") : String(minutes);
+  const ss = String(seconds).padStart(2, "0");
+  return hours > 0 ? `${hours}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+
+function percentFromEvent(e) {
+  const rect = timeline.getBoundingClientRect();
+  const x = Math.min(Math.max(0, e.clientX - rect.left), rect.width);
+  return rect.width === 0 ? 0 : x / rect.width;
+}
+
+function updatePreview(e) {
+  const rect = timeline.getBoundingClientRect();
+  const offsetX = e.clientX - rect.left;
+  const percent = Math.min(Math.max(0, offsetX / rect.width), 1);
+
+  timeline.style.setProperty("--preview-position", percent);
+
+  const previewTime = (video.duration || 0) * percent;
+  tooltip.textContent = formatTime(previewTime);
+
+  showSeekBox(previewTime);
+
+  seekTimeBox.style.left = `${offsetX}px`;
+}
+
+timeline.addEventListener("mousemove", updatePreview);
+timeline.addEventListener("mouseenter", updatePreview);
+
+timeline.addEventListener("mouseleave", () => {
+});
+
+timeline.addEventListener("mousedown", (e) => {
+  isScrubbing = true;
+  scrubTo(e);
+
+  document.addEventListener("mousemove", scrubTo);
+  document.addEventListener("mouseup", stopScrubbing, { once: true });
+});
+
+timeline.addEventListener("click", (e) => {
+  scrubTo(e);
+});
+
+function scrubTo(e) {
+  const rect = timeline.getBoundingClientRect();
+  const offsetX = e.clientX - rect.left;
+  const percent = Math.min(Math.max(0, offsetX / rect.width), 1);
+
+  const time = (video.duration || 0) * percent;
+  tooltip.textContent = formatTime(time);
+
+  showSeekBox(time);
+
+  seekTimeBox.style.left = `${offsetX}px`;
+
+  timeline.style.setProperty("--preview-position", percent);
+
+  if (isScrubbing) video.currentTime = time;
+}
+
+
+function showSeekBox(time) {
+  seekTimeBox.textContent = formatTime(time);
+  seekTimeBox.classList.add("show");
+}
+
+function hideSeekBox() {
+  seekTimeBox.classList.remove("show");
+}
+
+timeline.addEventListener("mouseleave", hideSeekBox);
+
+function stopScrubbing() {
+  isScrubbing = false;
+  document.removeEventListener("mousemove", scrubTo);
+  hideSeekBox();
+}

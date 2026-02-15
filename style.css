@@ -30,6 +30,7 @@ body {
   margin-bottom: 16px;
 }
 
+/* --- video player --- */
 .vid-container {
   background: black;
   position: relative;
@@ -165,6 +166,7 @@ video {
 
 .volume-slider {
   width: 0;
+  accent-color: white;
   transform: scaleX(0);
   transform-origin: left;
   transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -180,6 +182,99 @@ video {
   width: 50px;
 }
 
+/* --- timeline --- */
+.timeline {
+  position: relative;
+  height: 8px;
+  margin: 0 1rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+
+  --progress-position: 0;
+  --preview-position: 0;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: calc(var(--progress-position) * 100%);
+  background: red;
+}
+
+.timeline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: calc(var(--preview-position) * 100%);
+  background: rgba(255, 255, 255, 0.18);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.timeline:hover::after {
+  opacity: 1;
+}
+
+.timeline .thumb-indicator {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--progress-position) * 100%);
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  pointer-events: none;
+}
+
+.timeline:hover .thumb-indicator {
+  opacity: 1;
+}
+
+.timeline .time-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: calc(var(--preview-position) * 100%);
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  pointer-events: none;
+}
+
+.timeline:hover .time-tooltip {
+  opacity: 1;
+}
+
+ .seek-time-box{
+  position: absolute;
+  bottom: calc(100% + 10px);
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  white-space: nowrap;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+.seek-time-box.show {
+  opacity: 1;
+}
 
 .container {
   margin-left: auto;
