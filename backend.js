@@ -72,12 +72,10 @@ const speedBtn = document.querySelector(".speed-btn");
   });
 
 // speed controls
-speedBtn.addEventListener("click", () => {
-  const speeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-  let currentSpeedIndex = speeds.indexOf(video.playbackRate);
-  currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
-  video.playbackRate = speeds[currentSpeedIndex];
-  speedBtn.textContent = `${speeds[currentSpeedIndex]}x`;
+const speedSelect = document.querySelector(".speed-select");
+
+speedSelect.addEventListener("change", () => {
+  video.playbackRate = parseFloat(speedSelect.value);
 });
 
 

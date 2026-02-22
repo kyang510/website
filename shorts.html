@@ -20,7 +20,7 @@
     </div>
 <div class = "vid-container">
   <div class = "vid-controls-container">
-      <div class="seek-time-box" id="seekTimeBox"> 0:00</div> 
+      <div class="seek-time-box" id="seekTimeBox"> 0:00</div>
     <div class = "timeline"></div>
      <div class = "controls"> 
       <button class = "play-pause">
@@ -52,11 +52,20 @@
         <div class = "current-time">0:00</div>
         <div class = "total-time"></div>
       </div>
-      
-        <button class = "speed-btn wide-btn">
-          1x
-        </button>
 
+        <div class="speed-container">
+            <select class="speed-select wide-btn">
+              <option value="0.25">0.25x</option>
+              <option value="0.5">0.5x</option>
+              <option value="0.75">0.75x</option>
+              <option value="1" selected>1x</option>
+              <option value="1.25">1.25x</option>
+              <option value="1.5">1.5x</option>
+              <option value="1.75">1.75x</option>
+              <option value="2">2x</option>
+            </select>
+        </div>
+              
         <button class = "mini-player-btn">
           <svg viewBox = "0 0 24 24">
             <path fill = "currentColor" d = "M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-10-7h9v6h-9z"/>

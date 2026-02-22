@@ -170,7 +170,7 @@ video {
 
 .volume-slider {
   width: 0;
-  accent-color: white;
+  accent-color: rgb(255, 0, 0);
   transform: scaleX(0);
   transform-origin: left;
   transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -190,7 +190,7 @@ video {
 .timeline {
   position: relative;
   height: 8px;
-  margin: 0 1rem;
+  margin: 1rem;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 999px;
@@ -222,25 +222,27 @@ video {
   opacity: 1;
 }
 
+/* the white dot on timeline */
 .timeline .thumb-indicator {
   position: absolute;
   top: 50%;
   left: calc(var(--progress-position) * 100%);
   transform: translate(-50%, -50%);
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 75%;
   background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
   opacity: 0;
   transition: opacity 0.12s ease;
   pointer-events: none;
 }
 
-.timeline:hover .thumb-indicator {
+.timeline:hover .thumb-indicator,
+.timeline:focus-within .thumb-indicator {
   opacity: 1;
 }
 
+/* time on timeline */
 .timeline .time-tooltip {
   position: absolute;
   bottom: calc(100% + 10px);
@@ -266,10 +268,9 @@ video {
   bottom: calc(100% + 10px);
   padding: 5px 8px;
   font-size: 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   background: rgba(0,0,0,0.9);
   color: #fff;
-  white-space: nowrap;
   z-index: 999;
   opacity: 0;
   pointer-events: none;
@@ -278,6 +279,56 @@ video {
 
 .seek-time-box.show {
   opacity: 1;
+}
+
+/*  speed select dropdown */
+.speed-select {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 6px;
+  padding: 4px 6px;
+  cursor: pointer;
+  height: 30px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease-in-out;
+  font-size: 14px;
+}
+
+/* dropdown background*/
+.speed-select option {
+  background: #212121;
+  color: white;
+}
+
+.speed-select:hover {
+  opacity: 1;
+}
+
+/* nav bar */
+.lang-bar {
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: center;  
+}
+
+.lang-btn {
+  background: #212121;
+  border: 1px solid #475569;
+  color: #e5e7eb;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.lang-btn.active {
+  background: #4f46e5;
+  border-color: #818cf8;
+}
+
+.lang-btn:hover {
+  background: #465a85;
 }
 
 .container {
@@ -314,28 +365,4 @@ p {
   color: #cbd5f5;
 }
 
-.lang-bar {
-  margin-bottom: 14px;
-  display: flex;
-  justify-content: center;  
-}
-
-.lang-btn {
-  background: #212121;
-  border: 1px solid #475569;
-  color: #e5e7eb;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.lang-btn.active {
-  background: #4f46e5;
-  border-color: #818cf8;
-}
-
-.lang-btn:hover {
-  background: #465a85;
-}
 
