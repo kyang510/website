@@ -13,7 +13,7 @@ body {
   margin: 0;
 }
 
-.jp-font * { /* pixle font */
+.jp-font * { /* pixel font */
   font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif !important;
 }
 
@@ -30,7 +30,7 @@ body {
   margin-bottom: 16px;
 }
 
-/* --- video player --- */
+/*video player*/
 .vid-container {
   background: black;
   position: relative;
@@ -158,9 +158,14 @@ video {
 .vid-container[data-volume-level="low"] .volume-low {
   display: block;
 }
-
-.vid-container[data-volume-level="muted"] .volume-muted {
+/* text box */
+.vid-container[data-volume-level="muted"] .volume-muted, .mute-btn::after {
+  content: "Mute [M]";;
   display: block;
+}
+
+.vid-container[data-volume-level="muted"] .mute-btn::after {
+  content: "Unmute [M]";
 }
 
 .volume-container {
@@ -186,7 +191,7 @@ video {
   width: 50px;
 }
 
-/* --- timeline --- */
+/* timeline */
 .timeline {
   position: relative;
   height: 8px;
@@ -364,5 +369,54 @@ p {
   margin-bottom: 16px;
   color: #cbd5f5;
 }
+/* hover text for buttons// make better later maybe*/
+.hover-mini, .hover-theater, .hover-full, 
+.mute-btn::after,
+.play-pause::after{
+  display: none;
+  position: absolute;
+  margin-bottom: calc(100%);
+  top: 20px;
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
 
+.mini-player-btn:hover .hover-mini {
+  display: block;
+  right: 98px;
+  opacity: 1;
+}
 
+.theater-btn:hover .hover-theater {
+  display: block;
+  right: 58px;
+  opacity: 1;
+}
+
+.fullscreen-btn:hover .hover-full {
+  display: block;
+  right: 18px;
+  opacity: 1;
+}
+
+.play-pause:hover::after {
+  display: block;
+  opacity: 1;
+}
+.vid-container.paused .play-pause::after {
+  content: "Play [K]";
+}
+
+.vid-container:not(.paused) .play-pause::after {
+  content: "Pause [K]";
+}
+
+.mute-btn:hover::after {
+  display: block;
+  opacity: 1;
+}
