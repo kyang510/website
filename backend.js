@@ -20,6 +20,59 @@ const savedFont = localStorage.getItem("jpFontEnabled");
     // keep font while of diff pages  
     localStorage.setItem("jpFontEnabled", isEnabled);
   });
+  
+// github repos
+const username = "kyang510";
+const reposContainer = document.getElementById("repos");
+const statusText = document.getElementById("status");
+
+async function loadRepos() {
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
+    );
+
+    if (!response.ok) {
+      statusText.textContent = "Error loading repositories.";
+      return;
+    }
+
+    const repos = await response.json();
+
+    const filteredRepos = repos
+      .filter(repo => !repo.fork)
+      .filter(repo => !repo.archived)
+      .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+
+    statusText.textContent = `Showing ${filteredRepos.length} projects`;
+
+    reposContainer.innerHTML = filteredRepos.map(repo => `
+      <div class="repo">
+        <h3>
+          <a href="${repo.html_url}" target="_blank">
+            ${repo.name}
+          </a>
+        </h3>
+        <p>${repo.description ?? "No description provided."}</p>
+        <p>
+          ${repo.language ? `<strong>${repo.language}</strong> ` : ""}
+          ⭐ ${repo.stargazers_count}
+        </p>
+        ${repo.homepage ? `
+          <p>
+            <a href="${repo.homepage}" target="_blank">Live Demo</a>
+          </p>
+        ` : ""}
+      </div>
+    `).join("");
+
+  } catch (error) {
+    statusText.textContent = "Something went wrong.";
+    console.error(error);
+  }
+
+}
+  loadRepos();
 });
 
 // video controls
