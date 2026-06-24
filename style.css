@@ -30,6 +30,10 @@ body {
   margin-bottom: 16px;
 }
 
+[data-page-content] {
+  width: 100%;
+}
+
 /*video player*/
 .vid-container {
   background: black;
@@ -39,6 +43,29 @@ body {
   width: 90%;
   max-width: 1000px;
   margin-inline: auto;
+}
+
+.vid-container.mini-player:not(.native-pip),
+#persistent-player-host .vid-container.mini-player:not(.native-pip) {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: min(360px, calc(100vw - 32px));
+  max-width: 360px;
+  margin: 0;
+  z-index: 1000;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+#persistent-player-host .vid-container.native-pip {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .vid-container.theater,
