@@ -1,3 +1,7 @@
+:root {
+  --background-color-video-btns: #cecece27;
+}
+
 ::before, ::after{
   box-sizing: border-box;
 }
@@ -122,17 +126,30 @@ video {
   padding: 1rem;
 }
 
-.vid-container .controls button {
-  background: none;
+.vid-container .controls > button {
+  background: var(--background-color-video-btns);
+  border-radius: 99px;
   border: none;
   color: inherit;
   padding: 0;
   cursor: pointer;
   font-size: 1rem;
-  height: 30px;
-  width: 30px;
+  height: 32px;
+  width: 32px;
   opacity: 0.8;
   transition: opacity 0.3s ease-in-out;
+}
+
+.mute-btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  height: 32px;
+  width: 32px;
+  opacity: 0.8;
 }
 
 .duration-container {
@@ -196,13 +213,15 @@ video {
 }
 
 .volume-container {
+  background: var(--background-color-video-btns);
+  border-radius: 999px;
   display: flex;
   align-items: center;
 }
 
 .volume-slider {
   width: 0;
-  accent-color: rgb(255, 0, 0);
+  accent-color: white;
   transform: scaleX(0);
   transform-origin: left;
   transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -226,7 +245,7 @@ video {
   cursor: pointer;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 999px;
-  overflow: hidden;
+  overflow: visible;
 
   --progress-position: 0;
   --preview-position: 0;
@@ -260,18 +279,20 @@ video {
   top: 50%;
   left: calc(var(--progress-position) * 100%);
   transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 75%;
   background: rgba(255, 255, 255, 0.95);
   opacity: 0;
   transition: opacity 0.12s ease;
   pointer-events: none;
+  z-index: 999;
 }
 
 .timeline:hover .thumb-indicator,
 .timeline:focus-within .thumb-indicator {
   opacity: 1;
+  transform: translate(-50%, -50%) scale(1.8);
 }
 
 /* time on timeline */
@@ -287,7 +308,7 @@ video {
   border-radius: 6px;
   white-space: nowrap;
   opacity: 0;
-  transition: opacity 0.12s ease;
+  transition: opacity 0.1s ease;
   pointer-events: none;
 }
 
@@ -296,26 +317,12 @@ video {
 }
 
  .seek-time-box{
-  position: absolute;
-  bottom: calc(100% + 10px);
-  padding: 5px 8px;
-  font-size: 12px;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.9);
-  color: #fff;
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.12s ease;
-}
-
-.seek-time-box.show {
-  opacity: 1;
+  display: none;
 }
 
 /*  speed select dropdown */
 .speed-select {
-  background: transparent;
+  background: var(--background-color-video-btns);
   color: white;
   border: 2px solid white;
   border-radius: 6px;

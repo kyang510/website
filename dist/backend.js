@@ -157,12 +157,16 @@ async function loadRepos() {
         return;
     reposContainer.dataset.loaded = "true";
     try {
-        const response = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
-        if (!response.ok) {
+        const response = await Promise.all([
+            fetch("https://api.github.com/repos/kyang510/dis-clone"),
+            fetch("https://api.github.com/repos/kyang510/website")
+            //`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
+        ]);
+        if (!response.every(res => res.ok)) {
             statusText.textContent = "Error loading repositories.";
             return;
         }
-        const repos = (await response.json());
+        const repos = (await Promise.all(response.map(res => res.json())));
         const filteredRepos = repos
             .filter(repo => !repo.fork)
             .filter(repo => !repo.archived)

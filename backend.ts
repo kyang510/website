@@ -239,16 +239,18 @@ async function loadRepos(): Promise<void> {
   reposContainer.dataset.loaded = "true";
 
   try {
-    const response = await fetch(
-      `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
-    );
+    const response = await Promise.all([ 
+    fetch("https://api.github.com/repos/kyang510/dis-clone"),
+    fetch("https://api.github.com/repos/kyang510/website")
+// every repo/need to add limiter/ max 60 calls per hour//`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
+    ]);
 
-    if (!response.ok) {
+    if (!response.every(res => res.ok)) {
       statusText.textContent = "Error loading repositories.";
       return;
     }
 
-    const repos = (await response.json()) as GitHubRepo[];
+    const repos = (await Promise.all(response.map(res => res.json()))) as GitHubRepo[];
 
     const filteredRepos = repos
       .filter(repo => !repo.fork)
