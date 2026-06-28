@@ -158,9 +158,9 @@ async function loadRepos() {
     reposContainer.dataset.loaded = "true";
     try {
         const response = await Promise.all([
-            fetch("https://api.github.com/repos/kyang510/dis-clone"),
-            fetch("https://api.github.com/repos/kyang510/website")
-            //`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
+            fetch(`https://api.github.com/repos/${username}/dis-clone`),
+            fetch(`https://api.github.com/repos/${username}/website`)
+            // every repo/need to add limiter/ max 60 calls per hour//`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
         ]);
         if (!response.every(res => res.ok)) {
             statusText.textContent = "Error loading repositories.";
@@ -172,29 +172,64 @@ async function loadRepos() {
             .filter(repo => !repo.archived)
             .sort((a, b) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime());
         statusText.textContent = `Showing ${filteredRepos.length} projects`;
-        reposContainer.innerHTML = filteredRepos.map(repo => `
-      <div class="repo">
-        <h3>
-          <a href="${repo.html_url}" target="_blank">
-            ${repo.name}
-          </a>
-        </h3>
-        <p>${repo.description ?? "No description provided."}</p>
-        <p>
-          ${repo.language ? `<strong>${repo.language}</strong> ` : ""}
-          &#9733; ${repo.stargazers_count}
-        </p>
-        ${repo.homepage ? `
-          <p>
-            <a href="${repo.homepage}" target="_blank">Live Demo</a>
-          </p>
-        ` : ""}
-      </div>
-    `).join("");
+        reposContainer.replaceChildren(...filteredRepos.map(createRepoCard));
     }
     catch (error) {
         statusText.textContent = "Something went wrong.";
         console.error(error);
+    }
+}
+function createRepoCard(repo) {
+    const card = document.createElement("div");
+    card.className = "repo";
+    const heading = document.createElement("h3");
+    const repoLink = createExternalLink(repo.html_url, repo.name);
+    if (repoLink) {
+        heading.appendChild(repoLink);
+    }
+    else {
+        heading.textContent = repo.name;
+    }
+    card.appendChild(heading);
+    const description = document.createElement("p");
+    description.textContent = repo.description ?? "No description provided.";
+    card.appendChild(description);
+    const meta = document.createElement("p");
+    if (repo.language) {
+        const language = document.createElement("strong");
+        language.textContent = repo.language;
+        meta.append(language, " ");
+    }
+    meta.append(`\u2605 ${repo.stargazers_count}`);
+    card.appendChild(meta);
+    const homepageLink = createExternalLink(repo.homepage, "Live Demo");
+    if (homepageLink) {
+        const homepage = document.createElement("p");
+        homepage.appendChild(homepageLink);
+        card.appendChild(homepage);
+    }
+    return card;
+}
+function createExternalLink(href, label) {
+    const url = parseHttpUrl(href);
+    if (!url)
+        return null;
+    const link = document.createElement("a");
+    link.href = url.href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = label;
+    return link;
+}
+function parseHttpUrl(href) {
+    if (!href)
+        return null;
+    try {
+        const url = new URL(href);
+        return url.protocol === "http:" || url.protocol === "https:" ? url : null;
+    }
+    catch {
+        return null;
     }
 }
 // video controls
